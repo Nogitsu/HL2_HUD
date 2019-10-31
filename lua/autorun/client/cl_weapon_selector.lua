@@ -36,6 +36,7 @@ local last_selected, selected, open_time = nil, 0, 0
 
 hook.Add( "PlayerBindPress", "HL2_HUD:SelectorNavigation", function( ply, bind, pressed )
     if HL2_HUD.Disabled[ "WeaponSelector" ] then return end
+    if input.IsButtonDown( MOUSE_LEFT ) then return end -- Prevents switching on physgun use
 
     if bind == "invprev" then
         selected = selected - 1
@@ -63,7 +64,7 @@ end )
 
 hook.Add( "StartCommand", "HL2_HUD:SelectorConfirmation", function( ply, cmd )
     if HL2_HUD.Disabled[ "WeaponSelector" ] then return end
-    
+
     if cmd:KeyDown( IN_ATTACK ) then
         if open_time + 2 < CurTime() then return end
         cmd:ClearButtons()
