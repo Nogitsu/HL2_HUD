@@ -66,7 +66,7 @@ hook.Add( "StartCommand", "HL2_HUD:SelectorConfirmation", function( ply, cmd )
     if HL2_HUD.Disabled[ "WeaponSelector" ] then return end
 
     if cmd:KeyDown( IN_ATTACK ) then
-        if open_time + 2 < CurTime() then return end
+        if open_time + 2 < CurTime() or not LocalPlayer():Alive() then return end
         cmd:ClearButtons()
 
         surface.PlaySound( "common/wpn_hudoff.wav" )
@@ -80,7 +80,7 @@ end )
 
 hook.Add( "HUDPaint", "HL2_HUD:WeaponSelector", function()
     if HL2_HUD.Disabled[ "WeaponSelector" ] then return end
-    if open_time + 2 < CurTime() then return end
+    if open_time + 2 < CurTime() or not LocalPlayer():Alive() then return end
 
     sweps, for_count = GetSweps()
 
@@ -88,7 +88,7 @@ hook.Add( "HUDPaint", "HL2_HUD:WeaponSelector", function()
     local y = 0
 
     for i = 0, 5 do
-        draw.RoundedBox( 2, ScrW() / 2 - ( ( w + 10 ) * 6 / 2 ) + i * (w + 10), 15, w, 10, (for_count[ selected + 1 ].Slot or 0) == i and HL2_HUD.Colors.main or HL2_HUD.Colors.back )
+        draw.RoundedBox( 2, ScrW() / 2 - ( ( w + 10 ) * 6 / 2 ) + i * (w + 10), 15, w, 10, (for_count[ selected + 1 ] and for_count[ selected + 1 ].Slot or 0) == i and HL2_HUD.Colors.main or HL2_HUD.Colors.back )
     end
 
     local id = 0
